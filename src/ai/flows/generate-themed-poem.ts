@@ -17,6 +17,9 @@ const GenerateThemedPoemInputSchema = z.object({
     .enum(['Romantic', 'Naturalistic', 'Classic'])
     .default('Romantic')
     .describe('The aesthetic theme for the poem.'),
+  photoDataUri: z.string().optional().describe(
+    "A photo to inspire the poem, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+  ),
 });
 export type GenerateThemedPoemInput = z.infer<typeof GenerateThemedPoemInputSchema>;
 
@@ -39,6 +42,11 @@ const prompt = ai.definePrompt({
   Generate a poem based on the following prompt, styled with a {{{theme}}} aesthetic.
   Make the poem sound human-like and professional, improving grammar, vocabulary and stylistic choices.
   The poem should be formatted into stanzas.
+  
+  {{#if photoDataUri}}
+  Use the following image as inspiration for the poem.
+  Image: {{media url=photoDataUri}}
+  {{/if}}
 
   Prompt: {{{prompt}}}`,
 });

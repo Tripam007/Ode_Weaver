@@ -7,12 +7,14 @@ import { refinePoemForProfessionalism } from '@/ai/flows/refine-poem-for-profess
 const poemFormSchema = z.object({
   prompt: z.string(),
   theme: z.enum(['Romantic', 'Naturalistic', 'Classic']),
+  photoDataUri: z.string().optional(),
 });
 
 export async function generatePoemAction(formData: FormData) {
   const validatedFields = poemFormSchema.safeParse({
     prompt: formData.get('prompt'),
     theme: formData.get('theme'),
+    photoDataUri: formData.get('photoDataUri'),
   });
 
   if (!validatedFields.success) {

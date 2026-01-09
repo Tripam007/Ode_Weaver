@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -11,12 +11,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Leaf, Wand2, Sparkles, Loader2 } from 'lucide-react';
+import { Leaf, Wand2, Sparkles, Loader2, Image as ImageIcon, X } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { Input } from './ui/input';
+import Image from 'next/image';
 
 const poemFormSchema = z.object({
   prompt: z.string().min(10, { message: 'Carpe Diem! Seize the day with a prompt of at least 10 characters.' }),
   theme: z.enum(['Romantic', 'Naturalistic', 'Classic']),
+  photoDataUri: z.string().optional(),
 });
 
 type PoemFormValues = z.infer<typeof poemFormSchema>;
@@ -31,14 +34,38 @@ export default function PoemGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isRefining, setIsRefining] = useState(false);
   const { toast } = useToast();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<PoemFormValues>({
     resolver: zodResolver(poemFormSchema),
     defaultValues: {
       prompt: '',
       theme: 'Romantic',
+      photoDataUri: '',
     },
   });
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUri = reader.result as string;
+        setImagePreview(dataUri);
+        form.setValue('photoDataUri', dataUri);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    form.setValue('photoDataUri', '');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleGenerate = async (values: PoemFormValues) => {
     setIsGenerating(true);
@@ -46,6 +73,9 @@ export default function PoemGenerator() {
     const formData = new FormData();
     formData.append('prompt', values.prompt);
     formData.append('theme', values.theme);
+    if (values.photoDataUri) {
+      formData.append('photoDataUri', values.photoDataUri);
+    }
 
     const result = await generatePoemAction(formData);
     
@@ -106,6 +136,32 @@ export default function PoemGenerator() {
                   </FormItem>
                 )}
               />
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-accent/80">Inspire with an Image (Optional)</FormLabel>
+                <FormControl>
+                  <div>
+                  <Input 
+                    type="file" 
+                    accept="image/*" 
+                    className="hidden" 
+                    ref={fileInputRef}
+                    onChange={handleImageChange}
+                    />
+                    <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} className="w-full bg-background">
+                      <ImageIcon className="mr-2 h-4 w-4" />
+                      Upload Image
+                    </Button>
+                  </div>
+                </FormControl>
+                {imagePreview && (
+                  <div className="mt-4 relative">
+                    <Image src={imagePreview} alt="Image preview" width={500} height={300} className="rounded-md object-cover w-full aspect-video" />
+                    <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-7 w-7" onClick={handleRemoveImage}>
+                      <X className="h-4 w-4"/>
+                    </Button>
+                  </div>
+                )}
+              </FormItem>
               <FormField
                 control={form.control}
                 name="theme"
