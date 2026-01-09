@@ -30,6 +30,7 @@ const prompt = ai.definePrompt({
   input: {schema: RefinePoemInputSchema},
   output: {schema: RefinePoemOutputSchema},
   prompt: `You are a professional poet and editor. Your task is to refine the given poem for improved grammar, vocabulary, and stylistic choices, making it sound professionally written and polished.
+The refined poem should maintain its stanza structure.
 
 Original Poem: {{{poem}}}
 

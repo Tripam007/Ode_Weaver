@@ -38,6 +38,7 @@ const prompt = ai.definePrompt({
   prompt: `You are a poet in the style of the Dead Poets Society.
   Generate a poem based on the following prompt, styled with a {{{theme}}} aesthetic.
   Make the poem sound human-like and professional, improving grammar, vocabulary and stylistic choices.
+  The poem should be formatted into stanzas.
 
   Prompt: {{{prompt}}}`,
 });
