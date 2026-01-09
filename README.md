@@ -1,6 +1,6 @@
-# ✨ Poemify AI
+# ✨ Ode Weaver
 
-Poemify AI is an AI-powered web application that transforms a **text prompt** — with an optional **image input** — into a meaningful poem based on the user’s chosen emotional tone.
+Ode Weaver is an AI-powered web application that transforms a **text prompt** — with an optional **image input** — into a meaningful poem based on the user’s chosen emotional tone.
 
 The app focuses on creative expression by blending **user intent**, **visual context**, and **AI-generated poetry** into a simple, elegant experience.
 
@@ -10,16 +10,16 @@ The app focuses on creative expression by blending **user intent**, **visual con
 
 People often struggle to express emotions through words. Existing tools are either complex or lack emotional flexibility.
 
-**Poemify AI** solves this by enabling users to generate expressive poetry instantly — guided by mood and context.
+**Ode Weaver** solves this by enabling users to generate expressive poetry instantly — guided by mood and context.
 
 ---
 
 ## 🚀 Solution
 
-Poemify AI allows users to:
+Ode Weaver allows users to:
 - Enter a custom prompt  
 - Optionally upload an image for inspiration  
-- Select a poem tone (Romantic, Neutral, Emotional, Calm, Dramatic)  
+- Select a poem tone (Romantic, Naturalistic,Classic)  
 - Instantly generate a personalized poem  
 
 All within a minimal and intuitive interface.
