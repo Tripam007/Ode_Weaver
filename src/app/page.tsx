@@ -10,14 +10,6 @@ const quotes = [
     text: "We don't read and write poetry because it's cute. We read and write poetry because we are members of the human race. And the human race is filled with passion.",
     author: "John Keating, Dead Poets Society",
   },
-  {
-    text: "Poetry is when an emotion has found its thought and the thought has found words.",
-    author: "Robert Frost",
-  },
-  {
-    text: "A poem begins as a lump in the throat, a sense of wrong, a homesickness, a lovesickness.",
-    author: "Robert Frost",
-  }
 ];
 
 export default function Home() {
